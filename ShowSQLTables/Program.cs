@@ -19,7 +19,7 @@ namespace ShowSQLTables
 
                 if (reader1.HasRows || reader2.HasRows)
                 {
-                    Console.WriteLine("{0} {1} {2} {3} {4}", reader1.GetName(0), reader1.GetName(1), reader1.GetName(2), reader1.GetName(3), reader1.GetName(4));
+                    Console.WriteLine("{0} \t{1} \t{2} \t{3} \t{4}", reader1.GetName(0), reader1.GetName(1), reader1.GetName(2), reader1.GetName(3), reader1.GetName(4));
                     while (reader1.Read())
                     {
                         object authorId = reader1.GetValue(0);
@@ -28,11 +28,11 @@ namespace ShowSQLTables
                         object age = reader1.GetValue(3);
                         object country = reader1.GetValue(4);
 
-                        Console.WriteLine("{0} {1} {2} {3} {4}", authorId, firstName, lastName, age, country);
+                        Console.WriteLine("{0} \t{1} \t{2} \t{3} \t{4}", authorId, firstName, lastName, age, country);
                     }
                     Console.WriteLine();
 
-                    Console.WriteLine("{0} {1} {2} {3}", reader2.GetName(0), reader2.GetName(1), reader2.GetName(2), reader2.GetName(3));
+                    Console.WriteLine("{0} \t{1} \t{2} \t{3}", reader2.GetName(0), reader2.GetName(1), reader2.GetName(2), reader2.GetName(3));
                     while (reader2.Read())
                     {
                         object bookId = reader2.GetValue(0);
@@ -40,7 +40,7 @@ namespace ShowSQLTables
                         object date = reader2.GetValue(2);
                         object bAuthorId = reader2.GetValue(3);
 
-                        Console.WriteLine("{0} {1} {2} {3}", bookId, name, date, bAuthorId);
+                        Console.WriteLine("{0} \t{1} \t{2} \t{3}", bookId, name, date, bAuthorId);
                     }
                 }
                 else
