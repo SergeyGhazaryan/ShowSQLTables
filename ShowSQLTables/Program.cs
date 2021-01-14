@@ -47,8 +47,6 @@ namespace ShowSQLTables
                 {
                     Console.WriteLine("Do you have a invalide table.");
                 }
-                reader1.Close();
-                reader2.Close();
             }
         }
     }
