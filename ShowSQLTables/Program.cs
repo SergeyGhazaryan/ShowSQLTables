@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Data;
 using System.Data.SqlClient;
+using System.Collections.Generic;
 
 namespace ShowSQLTables
 {
@@ -12,22 +14,15 @@ namespace ShowSQLTables
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                SqlCommand command1 = new SqlCommand("SELECT * FROM Author", connection);
-                SqlDataReader reader1 = command1.ExecuteReader();
 
-                DataTable dataTable1 = new DataTable(command1, reader1);
-                dataTable1.DataTaker();
-                connection.Close();
+                SqlCommand command = new SqlCommand("SELECT * FROM Author", connection);
+                SqlDataReader reader = command.ExecuteReader();
 
-                Console.WriteLine();
+                DataTbl dataTbl = new DataTbl(command, reader);
 
-                connection.Open();
-                SqlCommand command2 = new SqlCommand("SELECT * FROM Book", connection);
-                SqlDataReader reader2 = command2.ExecuteReader();
-
-                DataTable dataTable2 = new DataTable(command2, reader2);
-                dataTable2.DataTaker();
-                connection.Close(); //We can not put, because using automatic closes
+                DataTable dataTable = new DataTable(dataTbl);
+                PrinterOfList printerOfList = new PrinterOfList(dataTable);
+                printerOfList.Print();
             }
         }
     }

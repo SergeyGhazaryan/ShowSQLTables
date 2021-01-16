@@ -1,43 +1,36 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 
 namespace ShowSQLTables
 {
-    class DataTable
+    class DataTable : IDataStore
     {
-        private SqlCommand command;
-        private SqlDataReader reader;
+        public DataTbl DataTbl { get; }
 
-        public DataTable(SqlCommand command, SqlDataReader reader)
+        public DataTable(DataTbl dataTbl)
         {
-            this.command = command;
-            this.reader = reader;
+            this.DataTbl = dataTbl;
         }
 
-        public void DataTaker()
+        public List<object> DataTaker()
         {
-            if (reader.HasRows)
-            {
-                for (int i = 0; i < reader.FieldCount; i++)
-                {
-                    Console.Write("{0} \t", reader.GetName(i));
-                }
-                Console.WriteLine();
+            List<object> listOfProperty = new List<object>();
 
-                while (reader.Read())
+            if (DataTbl.Reader.HasRows)
+            {
+                while (DataTbl.Reader.Read())
                 {
                     int num = 0;
-                    while (num < reader.FieldCount)
+                    while (num < DataTbl.Reader.FieldCount)
                     {
-                        object property = reader.GetValue(num);
-
-                        Console.Write("{0} \t", property);
-
+                        object property = DataTbl.Reader.GetValue(num);
+                        listOfProperty.Add(property);
                         num++;
                     }
-                    Console.WriteLine();
                 }
             }
+            return listOfProperty;
         }
     }
 }
