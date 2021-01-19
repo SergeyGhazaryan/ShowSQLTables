@@ -3,18 +3,18 @@ using System.Collections.Generic;
 
 namespace ShowSQLTables
 {
-    class PrinterOfList
+    class PrinterOfList<T>
     {
-        private DataTable dataTable;
+        private DataTable<T> dataTable;
 
-        public PrinterOfList (DataTable dataTbl)
+        public PrinterOfList (DataTable<T> dataTable)
         {
-            this.dataTable = dataTbl;
+            this.dataTable = dataTable;
         }
 
         public void Print()
         {
-            List<object> list = dataTable.DataTaker();
+            List<T> list = dataTable.DataTaker();
             for (int i = 0; i < list.Count; i++)
             {
                 Console.WriteLine(list[i]);

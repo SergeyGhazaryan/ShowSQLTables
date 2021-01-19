@@ -1,34 +1,47 @@
 ﻿using System.Collections.Generic;
+using System.Data.SqlClient;
 
 namespace ShowSQLTables
 {
-    class DataTable : IDataStore
+    class DataTable<T> : IDataStore<T>, IDisposable<T>
     {
-        public DataTbl DataTbl { get; }
+        public SqlCommand Command { get; }
+        public SqlDataReader Reader { get; }
 
-        public DataTable(DataTbl dataTbl)
+        public DataTable(SqlCommand command, SqlDataReader reader)
         {
-            this.DataTbl = dataTbl;
+            this.Command = command;
+            this.Reader = reader;
         }
 
-        public List<object> DataTaker()
+        public List<T> DataTaker()
         {
-            List<object> listOfProperty = new List<object>();
+            List<T> listOfProperty = new List<T>();
 
-            if (DataTbl.Reader.HasRows)
+            if (Reader.HasRows)
             {
-                while (DataTbl.Reader.Read())
+                while (Reader.Read())
                 {
                     int num = 0;
-                    while (num < DataTbl.Reader.FieldCount)
+                    while (num < Reader.FieldCount)
                     {
-                        object property = DataTbl.Reader.GetValue(num);
+                        T property = (T)Reader.GetValue(num);
                         listOfProperty.Add(property);
                         num++;
                     }
                 }
             }
+            else
+            {
+                Dispose(listOfProperty);
+            }
             return listOfProperty;
+        }
+
+        public void Dispose(List<T> listOfProperty)
+        {
+            listOfProperty.Clear();
+            listOfProperty = null;
         }
     }
 }

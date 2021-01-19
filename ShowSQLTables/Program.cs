@@ -1,4 +1,5 @@
-﻿using System.Data.SqlClient;
+﻿using System;
+using System.Data.SqlClient;
 using System.Collections.Generic;
 
 namespace ShowSQLTables
@@ -13,13 +14,16 @@ namespace ShowSQLTables
             {
                 connection.Open();
 
-                SqlCommand command = new SqlCommand("SELECT * FROM Author", connection);
+                Console.Write("SQL text: ");
+                string sqlExpression = Console.ReadLine();
+                Console.Clear();
+
+                SqlCommand command = new SqlCommand(sqlExpression, connection);
                 SqlDataReader reader = command.ExecuteReader();
 
-                DataTbl dataTbl = new DataTbl(command, reader);
+                DataTable<object> dataTable = new DataTable<object>(command, reader);
 
-                DataTable dataTable = new DataTable(dataTbl);
-                PrinterOfList printerOfList = new PrinterOfList(dataTable);
+                PrinterOfList<object> printerOfList = new PrinterOfList<object>(dataTable);
                 printerOfList.Print();
             }
         }

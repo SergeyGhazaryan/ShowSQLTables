@@ -2,9 +2,8 @@
 
 namespace ShowSQLTables
 {
-    interface IDataStore
+    interface IDataStore<T>
     {
-        DataTbl DataTbl { get; }
-        List<object> DataTaker();
+        List<T> DataTaker();
     }
 }
