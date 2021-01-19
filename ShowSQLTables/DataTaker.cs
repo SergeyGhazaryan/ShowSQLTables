@@ -3,45 +3,35 @@ using System.Data.SqlClient;
 
 namespace ShowSQLTables
 {
-    class DataTable<T> : IDataStore<T>, IDisposable<T>
+    class DataTable<T> : IDataStore<T>
     {
-        public SqlCommand Command { get; }
-        public SqlDataReader Reader { get; }
+        public string ConnectionString { get; }
+        public string SqlExpression { get; }
+        public SqlConnection Connection { get; }
+        public List<T> ListOfProperty { get; }
 
-        public DataTable(SqlCommand command, SqlDataReader reader)
+        public DataTable(string connectionString, string sqlExpression, SqlConnection connection)
         {
-            this.Command = command;
-            this.Reader = reader;
+            this.ConnectionString = connectionString;
+            this.SqlExpression = sqlExpression;
+            this.Connection = connection;
+            ListOfProperty = new List<T>();
         }
 
         public List<T> DataTaker()
         {
-            List<T> listOfProperty = new List<T>();
+            Connection.Open();
 
-            if (Reader.HasRows)
-            {
-                while (Reader.Read())
-                {
-                    int num = 0;
-                    while (num < Reader.FieldCount)
-                    {
-                        T property = (T)Reader.GetValue(num);
-                        listOfProperty.Add(property);
-                        num++;
-                    }
-                }
-            }
-            else
-            {
-                Dispose(listOfProperty);
-            }
-            return listOfProperty;
-        }
+            SqlCommand command = new SqlCommand(SqlExpression, Connection);
+            SqlDataReader reader = null;
 
-        public void Dispose(List<T> listOfProperty)
-        {
-            listOfProperty.Clear();
-            listOfProperty = null;
+            FunctionSelector<T> functionSelector = new FunctionSelector<T>(SqlExpression);
+            functionSelector.SelectFunctionForCommand(command, reader);
+            return functionSelector.ListOfProperty;
+
+            Connection.Dispose();
+
+            return ListOfProperty;
         }
     }
 }

@@ -5,19 +5,18 @@ namespace ShowSQLTables
 {
     class PrinterOfList<T>
     {
-        private DataTable<T> dataTable;
+        public List<T> List { get; }
 
-        public PrinterOfList (DataTable<T> dataTable)
+        public PrinterOfList (List<T> list)
         {
-            this.dataTable = dataTable;
+            this.List = list;
         }
 
         public void Print()
         {
-            List<T> list = dataTable.DataTaker();
-            for (int i = 0; i < list.Count; i++)
+            for (int i = 0; i < List.Count; i++)
             {
-                Console.WriteLine(list[i]);
+                Console.WriteLine(List[i]);
             }
         }
     }
