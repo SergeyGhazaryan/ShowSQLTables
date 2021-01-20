@@ -7,31 +7,24 @@ namespace ShowSQLTables
     {
         public string ConnectionString { get; }
         public string SqlExpression { get; }
-        public SqlConnection Connection { get; }
         public List<T> ListOfProperty { get; }
 
-        public DataTable(string connectionString, string sqlExpression, SqlConnection connection)
+        public DataTable(string connectionString, string sqlExpression)
         {
             this.ConnectionString = connectionString;
             this.SqlExpression = sqlExpression;
-            this.Connection = connection;
             ListOfProperty = new List<T>();
         }
 
-        public List<T> DataTaker()
+        public List<T> DataTaker(SqlConnection connection)
         {
-            Connection.Open();
-
-            SqlCommand command = new SqlCommand(SqlExpression, Connection);
+            SqlCommand command = new SqlCommand(SqlExpression, connection);
             SqlDataReader reader = null;
 
             FunctionSelector<T> functionSelector = new FunctionSelector<T>(SqlExpression);
-            functionSelector.SelectFunctionForCommand(command, reader);
+            functionSelector.SelectFunctionForCommand(command, reader, connection);
+
             return functionSelector.ListOfProperty;
-
-            Connection.Dispose();
-
-            return ListOfProperty;
         }
     }
 }

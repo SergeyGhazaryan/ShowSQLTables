@@ -10,17 +10,18 @@ namespace ShowSQLTables
         {
             string connectionString = @"Data Source=.\SQLEXPRESS01;Initial Catalog=Demo1;Integrated Security=True";
 
-            SqlConnection connection = new SqlConnection(connectionString);
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                Console.Write("SQL text: ");
+                string sqlExpression = Console.ReadLine();
+                Console.Clear();
 
-            Console.Write("SQL text: ");
-            string sqlExpression = Console.ReadLine();
-            Console.Clear();
+                DataTable<object> dataTable = new DataTable<object>(connectionString, sqlExpression);
+                List<object> table = dataTable.DataTaker(connection);
 
-            DataTable<object> dataTable = new DataTable<object>(connectionString, sqlExpression, connection);
-            List<object> table = dataTable.DataTaker();
-
-            PrinterOfList<object> printerOfList = new PrinterOfList<object>(table);
-            printerOfList.Print();
+                PrinterOfList<object> printerOfList = new PrinterOfList<object>(table);
+                printerOfList.Print();
+            }
         }
     }
 }
