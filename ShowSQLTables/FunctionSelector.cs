@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.SqlClient;
 
 namespace ShowSQLTables
@@ -15,14 +14,12 @@ namespace ShowSQLTables
             ListOfProperty = new List<T>();
         }
 
-        public void SelectFunctionForCommand(SqlCommand command, SqlDataReader reader, SqlConnection connection)
+        //Bad...
+        public void SelectFunctionForCommand(SqlCommand command, SqlDataReader reader)
         {
-            connection.Open();
-
             if (SqlExpression.Contains("INSERT") || SqlExpression.Contains("UPDATE") || SqlExpression.Contains("DELETE"))
             {
-                int numOfRows = command.ExecuteNonQuery();
-                Console.WriteLine(numOfRows);
+                int number = command.ExecuteNonQuery();
             }
             else if (SqlExpression.Contains("SELECT"))
             {
@@ -42,8 +39,6 @@ namespace ShowSQLTables
                     }
                 }
             }
-
-            connection.Dispose();
         }
     }
 }
