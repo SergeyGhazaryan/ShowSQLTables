@@ -17,10 +17,12 @@ namespace ShowSQLTables
             SqlCommand command = new SqlCommand(SqlExpression, connection);
             SqlDataReader reader = null;
 
-            FunctionSelector functionSelector = new FunctionSelector(SqlExpression);
-            functionSelector.SelectFunctionForCommand(command, reader, connection);
+            CommandReader commandReader = new CommandReader(command, reader);
 
-            return functionSelector.ListOfProperty;
+            FunctionSelector functionSelector = new FunctionSelector(commandReader);
+            List<object> listOfProperty = functionSelector.SelectFunctionForCommand(connection);
+
+            return listOfProperty;
         }
     }
 }

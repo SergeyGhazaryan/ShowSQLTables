@@ -6,39 +6,41 @@ namespace ShowSQLTables
 {
     class FunctionSelector
     {
-        public string SqlExpression { get; }
-        public List<object> ListOfProperty { get; }
+        public CommandReader commandReader { get; }
 
-        public FunctionSelector(string sqlExpression)
+        public FunctionSelector(CommandReader commandReader)
         {
-            this.SqlExpression = sqlExpression;
-            ListOfProperty = new List<object>();
+            this.commandReader = commandReader;
         }
 
-        public void SelectFunctionForCommand(SqlCommand command, SqlDataReader reader, SqlConnection connection)
+        public List<object> SelectFunctionForCommand(SqlConnection connection)
         {
+            List<object> listOfProperty = new List<object>();
+
             try
             {
                 connection.Open();
 
-                if (SqlExpression.Contains("INSERT") || SqlExpression.Contains("UPDATE") || SqlExpression.Contains("DELETE"))
+                var commandText = commandReader.Command.CommandText;
+
+                if (commandText.Contains("INSERT") || commandText.Contains("UPDATE") || commandText.Contains("DELETE"))
                 {
-                    int numOfChangedRows = command.ExecuteNonQuery();
+                    int numOfChangedRows = commandReader.Command.ExecuteNonQuery();
                     Console.WriteLine("The number of rows changed in table: {0}", numOfChangedRows);
                 }
-                else if (SqlExpression.Contains("SELECT"))
+                else if (commandText.Contains("SELECT"))
                 {
-                    reader = command.ExecuteReader();
+                    commandReader.Reader = commandReader.Command.ExecuteReader();
 
-                    if (reader.HasRows)
+                    if (commandReader.Reader.HasRows)
                     {
-                        while (reader.Read())
+                        while (commandReader.Reader.Read())
                         {
                             int num = 0;
-                            while (num < reader.FieldCount)
+                            while (num < commandReader.Reader.FieldCount)
                             {
-                                object property = (object)reader.GetValue(num);
-                                ListOfProperty.Add(property);
+                                object property = (object)commandReader.Reader.GetValue(num);
+                                listOfProperty.Add(property);
                                 num++;
                             }
                         }
@@ -53,6 +55,8 @@ namespace ShowSQLTables
             {
                 connection.Dispose();
             }
+
+            return listOfProperty;
         }
     }
 }
