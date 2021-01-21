@@ -17,33 +17,42 @@ namespace ShowSQLTables
 
         public void SelectFunctionForCommand(SqlCommand command, SqlDataReader reader, SqlConnection connection)
         {
-            connection.Open();
-
-            if (SqlExpression.Contains("INSERT") || SqlExpression.Contains("UPDATE") || SqlExpression.Contains("DELETE"))
+            try
             {
-                int numOfChangedRows = command.ExecuteNonQuery();
-                Console.WriteLine(numOfChangedRows);
+                connection.Open();
 
-            }
-            else if (SqlExpression.Contains("SELECT"))
-            {
-                reader = command.ExecuteReader();
-
-                if (reader.HasRows)
+                if (SqlExpression.Contains("INSERT") || SqlExpression.Contains("UPDATE") || SqlExpression.Contains("DELETE"))
                 {
-                    while (reader.Read())
+                    int numOfChangedRows = command.ExecuteNonQuery();
+                    Console.WriteLine(numOfChangedRows);
+                }
+                else if (SqlExpression.Contains("SELECT"))
+                {
+                    reader = command.ExecuteReader();
+
+                    if (reader.HasRows)
                     {
-                        int num = 0;
-                        while (num < reader.FieldCount)
+                        while (reader.Read())
                         {
-                            T property = (T)reader.GetValue(num);
-                            ListOfProperty.Add(property);
-                            num++;
+                            int num = 0;
+                            while (num < reader.FieldCount)
+                            {
+                                T property = (T)reader.GetValue(num);
+                                ListOfProperty.Add(property);
+                                num++;
+                            }
                         }
                     }
                 }
             }
-            connection.Dispose();
+            catch (Exception exception)
+            {
+                Console.WriteLine("Exception: {0}", exception.Message);
+            }
+            finally
+            {
+                connection.Dispose();
+            }
         }
     }
 }

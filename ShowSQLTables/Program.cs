@@ -17,7 +17,7 @@ namespace ShowSQLTables
                 Console.Clear();
 
                 DataTable<object> dataTable = new DataTable<object>(connectionString, sqlExpression);
-                List<object> table = dataTable.DataTaker(connection);
+                List<object> table = dataTable.DataTaker();
 
                 PrinterOfList<object> printerOfList = new PrinterOfList<object>(table);
                 printerOfList.Print();

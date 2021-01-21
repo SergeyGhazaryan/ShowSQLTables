@@ -16,8 +16,10 @@ namespace ShowSQLTables
             ListOfProperty = new List<T>();
         }
 
-        public List<T> DataTaker(SqlConnection connection)
+        public List<T> DataTaker()
         {
+            SqlConnection connection = new SqlConnection(ConnectionString);
+
             SqlCommand command = new SqlCommand(SqlExpression, connection);
             SqlDataReader reader = null;
 
