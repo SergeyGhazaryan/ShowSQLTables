@@ -4,15 +4,15 @@ using System.Data.SqlClient;
 
 namespace ShowSQLTables
 {
-    class FunctionSelector<T>
+    class FunctionSelector
     {
         public string SqlExpression { get; }
-        public List<T> ListOfProperty { get; }
+        public List<object> ListOfProperty { get; }
 
         public FunctionSelector(string sqlExpression)
         {
             this.SqlExpression = sqlExpression;
-            ListOfProperty = new List<T>();
+            ListOfProperty = new List<object>();
         }
 
         public void SelectFunctionForCommand(SqlCommand command, SqlDataReader reader, SqlConnection connection)
@@ -24,7 +24,7 @@ namespace ShowSQLTables
                 if (SqlExpression.Contains("INSERT") || SqlExpression.Contains("UPDATE") || SqlExpression.Contains("DELETE"))
                 {
                     int numOfChangedRows = command.ExecuteNonQuery();
-                    Console.WriteLine(numOfChangedRows);
+                    Console.WriteLine("The number of rows changed in table: {0}", numOfChangedRows);
                 }
                 else if (SqlExpression.Contains("SELECT"))
                 {
@@ -37,7 +37,7 @@ namespace ShowSQLTables
                             int num = 0;
                             while (num < reader.FieldCount)
                             {
-                                T property = (T)reader.GetValue(num);
+                                object property = (object)reader.GetValue(num);
                                 ListOfProperty.Add(property);
                                 num++;
                             }

@@ -16,10 +16,10 @@ namespace ShowSQLTables
                 string sqlExpression = Console.ReadLine();
                 Console.Clear();
 
-                DataTable<object> dataTable = new DataTable<object>(connectionString, sqlExpression);
-                List<object> table = dataTable.DataTaker();
+                DataTable dataTable = new DataTable(sqlExpression);
+                List<object> table = dataTable.DataTaker(connection);
 
-                PrinterOfList<object> printerOfList = new PrinterOfList<object>(table);
+                PrinterOfList printerOfList = new PrinterOfList(table);
                 printerOfList.Print();
             }
         }

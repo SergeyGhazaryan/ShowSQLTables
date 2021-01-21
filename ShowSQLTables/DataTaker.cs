@@ -3,27 +3,21 @@ using System.Data.SqlClient;
 
 namespace ShowSQLTables
 {
-    class DataTable<T> : IDataStore<T>
+    class DataTable : IDataStore
     {
-        public string ConnectionString { get; }
         public string SqlExpression { get; }
-        public List<T> ListOfProperty { get; }
 
-        public DataTable(string connectionString, string sqlExpression)
+        public DataTable(string sqlExpression)
         {
-            this.ConnectionString = connectionString;
             this.SqlExpression = sqlExpression;
-            ListOfProperty = new List<T>();
         }
 
-        public List<T> DataTaker()
+        public List<object> DataTaker(SqlConnection connection)
         {
-            SqlConnection connection = new SqlConnection(ConnectionString);
-
             SqlCommand command = new SqlCommand(SqlExpression, connection);
             SqlDataReader reader = null;
 
-            FunctionSelector<T> functionSelector = new FunctionSelector<T>(SqlExpression);
+            FunctionSelector functionSelector = new FunctionSelector(SqlExpression);
             functionSelector.SelectFunctionForCommand(command, reader, connection);
 
             return functionSelector.ListOfProperty;

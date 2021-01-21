@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace ShowSQLTables
 {
-    class PrinterOfList<T>
+    class PrinterOfList
     {
-        public List<T> List { get; }
+        public List<object> List { get; }
 
-        public PrinterOfList (List<T> list)
+        public PrinterOfList (List<object> list)
         {
             this.List = list;
         }
