@@ -39,12 +39,16 @@ namespace ShowSQLTables
                             int num = 0;
                             while (num < commandReader.Reader.FieldCount)
                             {
-                                object property = (object)commandReader.Reader.GetValue(num);
+                                object property = commandReader.Reader.GetValue(num);
                                 listOfProperty.Add(property);
                                 num++;
                             }
                         }
                     }
+                }
+                else
+                {
+                    Console.WriteLine("You must enter a SQL text.");
                 }
             }
             catch (Exception exception)
