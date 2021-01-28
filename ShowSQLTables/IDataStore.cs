@@ -3,8 +3,8 @@ using System.Data.SqlClient;
 
 namespace ShowSQLTables
 {
-    interface IDataStore
+    interface IDataStore<T>
     {
-        List<object> DataTaker(SqlConnection connection);
+        List<T> DataTaker(SqlConnection connection);
     }
 }

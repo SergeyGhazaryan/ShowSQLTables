@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Data.SqlClient;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 
 namespace ShowSQLTables
 {
@@ -16,10 +16,10 @@ namespace ShowSQLTables
                 string sqlExpression = Console.ReadLine();
                 Console.Clear();
 
-                DataTable dataTable = new DataTable(sqlExpression);
+                DataTable<object> dataTable = new DataTable<object>(sqlExpression);
                 List<object> table = dataTable.DataTaker(connection);
 
-                PrinterOfList printerOfList = new PrinterOfList(table);
+                PrinterOfList<object> printerOfList = new PrinterOfList<object>(table);
                 printerOfList.Print();
             }
         }

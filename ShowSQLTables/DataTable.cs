@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 
 namespace ShowSQLTables
 {
-    class DataTable : IDataStore
+    class DataTable<T> : IDataStore<T>
     {
         public string SqlExpression { get; }
 
@@ -12,15 +12,15 @@ namespace ShowSQLTables
             this.SqlExpression = sqlExpression;
         }
 
-        public List<object> DataTaker(SqlConnection connection)
+        public List<T> DataTaker(SqlConnection connection)
         {
             SqlCommand command = new SqlCommand(SqlExpression, connection);
             SqlDataReader reader = null;
 
             CommandReader commandReader = new CommandReader(command, reader);
 
-            FunctionSelector functionSelector = new FunctionSelector(commandReader);
-            List<object> listOfProperty = functionSelector.SelectFunctionForCommand(connection);
+            FunctionSelector<T> functionSelector = new FunctionSelector<T>(commandReader);
+            List<T> listOfProperty = functionSelector.SelectFunctionForCommand(connection);
 
             return listOfProperty;
         }
