@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 
 namespace ShowSQLTables
@@ -7,33 +8,31 @@ namespace ShowSQLTables
     {
         static void Main(string[] args)
         {
-            string connectionString = @"Data Source=.\SQLEXPRESS01;Initial Catalog=Demo1;Integrated Security=True";
+            string connectionString = @"Data Source=.\SQLEXPRESS01;Initial Catalog=demo;Integrated Security=True";
 
-            string sqlExpression = "SELECT * FROM Author";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                connection.Open();
-                SqlCommand command = new SqlCommand(sqlExpression, connection);
-                SqlDataReader reader = command.ExecuteReader();
+                Console.Write("SQL text: ");
+                string sqlExpression = Console.ReadLine();
+                Console.Clear();
 
-                if (reader.HasRows)
+                if (sqlExpression.Contains("Author"))
                 {
-                    Console.WriteLine("{0} {1} {2} {3} {4}", reader.GetName(0), reader.GetName(1), reader.GetName(2), reader.GetName(3), reader.GetName(4));
+                    DataTable<Author> dataTable = new DataTable<Author>(sqlExpression);
+                    List<Author> table = dataTable.DataTaker(connection);
 
-                    while (reader.Read())
-                    {
-                        object id = reader.GetValue(0);
-                        object firstName = reader.GetValue(1);
-                        object lastName = reader.GetValue(2);
-                        object age = reader.GetValue(3);
-                        object country = reader.GetValue(4);
-
-                        Console.WriteLine("{0} {1} {2} {3} {4}", id, firstName, lastName, age, country);
-                    }
+                    PrinterOfList<Author> printerOfList = new PrinterOfList<Author>(table);
+                    printerOfList.Print();
                 }
-                reader.Close();
+                else if(sqlExpression.Contains("Book"))
+                {
+                    DataTable<Book> dataTable = new DataTable<Book>(sqlExpression);
+                    List<Book> table = dataTable.DataTaker(connection);
+
+                    PrinterOfList<Book> printerOfList = new PrinterOfList<Book>(table);
+                    printerOfList.Print();
+                }
             }
-            Console.Read();
         }
-    }
+    } 
 }
