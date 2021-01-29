@@ -20,16 +20,9 @@ namespace ShowSQLTables
                 {
                     string fieldName = rd.GetName(i);
 
-                    try
+                    if (members.Any(m => string.Equals(m.Name, fieldName)))
                     {
-                        if (members.Any(m => string.Equals(m.Name, fieldName, StringComparison.OrdinalIgnoreCase)))
-                        {
-                            accessor[t, fieldName] = rd.GetValue(i);
-                        }
-                    }
-                    catch (Exception exception)
-                    {
-                        Console.WriteLine(exception.Message);
+                        accessor[t, fieldName] = rd.GetValue(i);
                     }
                 }
             }
