@@ -8,7 +8,7 @@ namespace ShowSQLTables
     {
         static void Main(string[] args)
         {
-            string connectionString = @"Data Source=.\SQLEXPRESS01;Initial Catalog=Demo1;Integrated Security=True";
+            string connectionString = @"Data Source=.\SQLEXPRESS01;Initial Catalog=demo;Integrated Security=True";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -16,12 +16,23 @@ namespace ShowSQLTables
                 string sqlExpression = Console.ReadLine();
                 Console.Clear();
 
-                DataTable<object> dataTable = new DataTable<object>(sqlExpression);
-                List<object> table = dataTable.DataTaker(connection);
+                if (sqlExpression.Contains("Author"))
+                {
+                    DataTable<Author> dataTable = new DataTable<Author>(sqlExpression);
+                    List<Author> table = dataTable.DataTaker(connection);
 
-                PrinterOfList<object> printerOfList = new PrinterOfList<object>(table);
-                printerOfList.Print();
+                    PrinterOfList<Author> printerOfList = new PrinterOfList<Author>(table);
+                    printerOfList.Print();
+                }
+                else if(sqlExpression.Contains("Book"))
+                {
+                    DataTable<Book> dataTable = new DataTable<Book>(sqlExpression);
+                    List<Book> table = dataTable.DataTaker(connection);
+
+                    PrinterOfList<Book> printerOfList = new PrinterOfList<Book>(table);
+                    printerOfList.Print();
+                }
             }
         }
-    }
+    } 
 }

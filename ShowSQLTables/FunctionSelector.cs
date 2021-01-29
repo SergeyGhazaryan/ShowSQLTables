@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 
 namespace ShowSQLTables
 {
-    class FunctionSelector<T>
+    class FunctionSelector<T> where T : class, new()
     {
         public CommandReader CommandReader { get; }
 
@@ -25,7 +25,7 @@ namespace ShowSQLTables
             }
             catch (Exception exception)
             {
-                Console.WriteLine("Exception: {0}", exception.Message);
+               Console.WriteLine("Exception: {0}", exception.Message);
             }
             finally
             {

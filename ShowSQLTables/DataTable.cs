@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 
 namespace ShowSQLTables
 {
-    class DataTable<T> : IDataStore<T>
+    class DataTable<T> : IDataStore<T> where T : class, new()
     {
         public string SqlExpression { get; }
 

@@ -1,15 +1,13 @@
-﻿/*using LinqToDB.Reflection;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Threading.Tasks;
+using FastMember;
 
 namespace ShowSQLTables
 {
-    class Convert
+    static class Convert
     {
-        public static T ConvertToObject<T>(this SqlDataReader rd) where T : class, new()
+        public static T ConvertToObject<T>(SqlDataReader rd) where T : class, new()
         {
             Type type = typeof(T);
             var accessor = TypeAccessor.Create(type);
@@ -22,14 +20,21 @@ namespace ShowSQLTables
                 {
                     string fieldName = rd.GetName(i);
 
-                    if (members.Any(m => string.Equals(m.Name, fieldName, StringComparison.OrdinalIgnoreCase)))
+                    try
                     {
-                        accessor[t, fieldName] = rd.GetValue(i);
+                        if (members.Any(m => string.Equals(m.Name, fieldName, StringComparison.OrdinalIgnoreCase)))
+                        {
+                            accessor[t, fieldName] = rd.GetValue(i);
+                        }
+                    }
+                    catch (Exception exception)
+                    {
+                        Console.WriteLine(exception.Message);
                     }
                 }
             }
+
             return t;
         }
     }
 }
-*/
