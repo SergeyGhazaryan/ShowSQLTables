@@ -22,21 +22,17 @@ namespace ShowSQLTables
 
                 if (commandReader.Reader.HasRows)
                 {
+                    for (int i = 0; i < fieldCount; i++)
+                    {
+                        Console.Write("{0} \t", commandReader.Reader.GetName(i));
+                    }
+                    Console.WriteLine();
+
                     while (commandReader.Reader.Read())
                     {
-                        int num = 0;
+                        T listOfPropertyForRow = Convert.ConvertToObject<T>(commandReader.Reader);
 
-                        while (num < fieldCount / fieldCount)
-                        {
-                            T listOfPropertyForRow = Convert.ConvertToObject<T>(commandReader.Reader);
-
-                            listOfProperty.Add(listOfPropertyForRow);
-
-                            Console.WriteLine("{0} \t", commandReader.Reader.GetName(num));
-
-                            num++;
-
-                        }
+                        listOfProperty.Add(listOfPropertyForRow);
                     }
                 }
             }

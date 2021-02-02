@@ -8,14 +8,15 @@ namespace ShowSQLTables
     {
         static void Main(string[] args)
         {
-            string connectionString = @"Data Source=.\SQLEXPRESS01;Initial Catalog=demo;Integrated Security=True";
+            string connectionString = @"Data Source=localhost;Initial Catalog=DEMO;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 Console.Write("SQL text: ");
                 string sqlExpression = Console.ReadLine();
-                Console.Clear();
 
+                Console.Clear();
+                
                 if (sqlExpression.Contains("Author"))
                 {
                     DataTable<Author> dataTable = new DataTable<Author>(sqlExpression);
